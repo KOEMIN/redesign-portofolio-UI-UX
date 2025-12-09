@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studi Kasus UI/UX - Aplikasi Transportasi & Payment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth; 
+        }
+        :root {
+            /* --- COLOR PALETTE --- */
+            --primary-color: #006666;  /* Teal */
+            --primary-dark: #004d4d;
+            --secondary-color: #ffca28; 
+            --bg-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-grey: #666;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.8;
+        }
+
+        /* --- 1. VISUAL HERO SECTION --- */
+        header {
+            background: var(--white);
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hero-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+        .hero-text { flex: 1; }
+        .hero-tag {
+            background: #e0f2f1;
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .hero-text h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-grey);
+            margin-bottom: 30px;
+        }
+        .btn-cta {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(0,102,102,0.2);
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .btn-cta:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: rotate(-2deg) translateY(0) scale(1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hero-image:hover img {
+            box-shadow: 0 40px 80px rgba(0,102,102,0.15);
+            transform: rotate(-2deg) translateY(-15px) scale(1.03);
+        }
+        
+        .hero-image a {
+            display: block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .hero-image a::after {
+            content: "▶ Klik untuk mencoba prototype";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8); 
+            background: rgba(0, 102, 102, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .hero-image a:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .hero-image a:hover img {
+            filter: brightness(0.8);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            background-color: var(--white);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        nav ul {
+            display: flex; justify-content: center; list-style: none;
+            flex-wrap: wrap; gap: 20px;
+        }
+        nav a {
+            text-decoration: none; color: var(--text-dark);
+            font-weight: 500; font-size: 0.9rem; transition: all 0.3s;
+            padding: 5px 15px; border-radius: 20px;
+        }
+        nav a:hover, nav a.active { 
+            background-color: var(--primary-color); 
+            color: var(--white); 
+        }
+
+        /* --- Container Layout --- */
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        section {
+            margin-bottom: 80px; 
+            padding: 0; 
+            scroll-margin-top: 100px;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        h3 {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        h4 { margin-bottom: 10px; }
+
+        /* --- Project Overview --- */
+        .project-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .overview-item strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- User Persona --- */
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .persona-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 16px;
+            border-top: 5px solid var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+        }
+        .persona-card:hover { transform: translateY(-10px); }
+        .persona-header {
+            display: flex; align-items: center; gap: 15px;
+            margin-bottom: 15px; padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .persona-img {
+            width: 60px; height: 60px;
+            background-color: #e0f2f1; border-radius: 50%;
+            overflow: hidden; border: 2px solid var(--white);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0;
+        }
+        .persona-img img { width: 100%; height: 100%; object-fit: cover; }
+        .persona-body { flex-grow: 1; }
+
+        /* --- Full Width Image Box --- */
+        .full-width-box {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .full-width-box img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        /* --- UI Gallery (Horizontal Scroll) --- */
+        .design-flow {
+            margin-bottom: 60px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .design-flow-header {
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+        .scroll-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .scroll-container img {
+            height: 500px; 
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            border: 1px solid #eee;
+        }
+        .scroll-container::-webkit-scrollbar { height: 8px; }
+        .scroll-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+        /* --- Comparison Grid --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .comp-item img {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+        .comp-label {
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-grey);
+        }
+
+        /* --- Prototype CTA --- */
+        .prototype-box {
+            text-align: center;
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin: 60px 0;
+            color: var(--primary-dark);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+        .arrow-down {
+            display: inline-block; 
+            margin-left: 8px;
+            animation: bounce 2s infinite; 
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-container { flex-direction: column-reverse; text-align: center; }
+            .hero-text { padding-right: 0; }
+            .hero-image img { transform: rotate(0); width: 80%; }
+            header h1 { font-size: 2.2rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="hero-container">
+            <div class="hero-text">
+                <span class="hero-tag">UI/UX CASE STUDY</span>
+                <h1>Redesain Aplikasi Transportasi & Payment</h1>
+                <p>Meningkatkan pengalaman mobilitas harian dengan mengurangi friksi saat pemesanan dan memberikan transparansi pembayaran total.</p>
+                <a href="#intro" class="btn-cta">
+                    Mulai Membaca <span class="arrow-down">↓</span>
+                </a>
+            </div>
+            <div class="hero-image">
+                <a href="https://www.figma.com/proto/WT5RYJtrTnk1NvSHwSPmfq/UIUX?node-id=69-36&t=4Kk9FErJ7IoXgMBY-1" target="_blank" title="Klik untuk coba prototype">
+                    <img src="UI/homeCreeenn.png" alt="App Showcase">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#intro">Overview</a></li>
+            <li><a href="#research">1. Empathize</a></li>
+            <li><a href="#ideation">2. Define & Ideate</a></li>
+            <li><a href="#designs">3. Prototype</a></li>
+            <li><a href="#testing">4. Testing</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <section id="intro">
+            <h2>Tentang Proyek Ini</h2>
+            <p>
+                Nama saya Muhammad Raufa Hafid Widodo. Proyek ini merupakan inisiatif redesain antarmuka aplikasi transportasi online yang terintegrasi dengan dompet digital. Fokus utama studi kasus ini adalah memecahkan masalah kognitif yang dialami pengguna saat melakukan pemesanan cepat.
+            </p>
+
+            <div class="project-overview">
+                <div class="overview-item">
+                    <strong>Peran</strong>
+                    UI/UX Designer & Researcher
+                </div>
+                <div class="overview-item">
+                    <strong>Durasi</strong>
+                    8 Minggu (Okt - Des 2025)
+                </div>
+                <div class="overview-item">
+                    <strong>Tools</strong>
+                    Figma, Canva, Google Meet
+                </div>
+            </div>
+        </section>
+
+        <section id="research">
+            <h2>1. Empathize & Research</h2>
+            <p>Untuk memahami pengguna, kami mengumpulkan data melalui <strong>wawancara mendalam kepada 3 partisipan</strong> (Pelajar, Mahasiswa, Pekerja) dan studi literatur tugas praktikum sebelumnya.</p>
+            
+            <div class="full-width-box">
+                <img src="UI/affinity.png" alt="Affinity Diagram" style="width:100%; object-fit: contain;">
+                <p style="margin-top:10px; color:#888; font-size:0.9rem;">Affinity Mapping: Mengelompokkan temuan wawancara.</p>
+            </div>
+
+            <div style="background: #fff; padding: 25px; border-radius: 12px; border-left: 5px solid var(--secondary-color); margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.03);">
+                <h4>Key Insights (Hasil Wawancara)</h4>
+                <ul style="margin-left: 20px; color: var(--text-grey);">
+                    <li><strong>Pain Points:</strong> Estimasi harga sering berubah di akhir, lokasi jemput sulit ditentukan di peta.</li>
+                    <li><strong>Expectation:</strong> Transparansi biaya total di awal tanpa biaya tersembunyi.</li>
+                    <li><strong>Behavior:</strong> Pengguna cenderung membatalkan pesanan jika loading terlalu lama.</li>
+                </ul>
+            </div>
+
+            <h3>User Persona</h3>
+            <div class="persona-grid" style="margin-top: 30px;">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <div class="persona-img"><img src="UI/profilIrma.png" alt="Irma"></div>
+                        <div>
+                            <h4 style="margin:0; color:var(--primary-dark)">Irma Carissa (13 Th)</h4>
+                            <span style="font-size:0.8rem; color:#888;">Siswi SMP</span>
+                        </div>
+                    </div>
+                    <div class="persona-body">
+                        <p style="font-size:0.9rem;"><strong>Masalah:</strong> Sulit menentukan titik jemput pagi hari.</p>
+                        <p style="font-size:0.9rem; margin-top:10px;"><strong>Need:</strong> Titik jemput yang mudah dipahami.</p>
+                    </div>
+                </div>
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <div class="persona-img"><img src="UI/profilKhansa.png" alt="Khansa"></div>
+                        <div>
+                            <h4 style="margin:0; color:var(--primary-dark)">Khansa Nabila (20 Th)</h4>
+                            <span style="font-size:0.8rem; color:#888;">Mahasiswa</span>
+                        </div>
+                    </div>
+                    <div class="persona-body">
+                        <p style="font-size:0.9rem;"><strong>Masalah:</strong> Sering tertipu biaya jasa tambahan.</p>
+                        <p style="font-size:0.9rem; margin-top:10px;"><strong>Need:</strong> Transparansi harga total.</p>
+                    </div>
+                </div>
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <div class="persona-img"><img src="UI/profilYeni.png" alt="Yeni"></div>
+                        <div>
+                            <h4 style="margin:0; color:var(--primary-dark)">Ibu Yeni (34 Th)</h4>
+                            <span style="font-size:0.8rem; color:#888;">Guru SD</span>
+                        </div>
+                    </div>
+                    <div class="persona-body">
+                        <p style="font-size:0.9rem;"><strong>Masalah:</strong> Sering terlambat karena estimasi meleset.</p>
+                        <p style="font-size:0.9rem; margin-top:10px;"><strong>Need:</strong> Estimasi waktu akurat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px;">
+                <h3>User Journey Map</h3>
+                <p>Pemetaan langkah-langkah pengguna dari awal membuka aplikasi hingga selesai melakukan pembayaran.</p>
+                <div class="full-width-box">
+                    <img src="UI/UserJourneyIrma.png" alt="User Journey Map Irma">
+                </div>
+                <div class="full-width-box">
+                    <img src="UI/UserJourneyKhansa.png" alt="User Journey Map Khansa">
+                </div>
+                <div class="full-width-box">
+                    <img src="UI/UserJourneyYeni.png" alt="User Journey Map Yeni">
+                </div>
+            </div>
+        </section>
+
+        <section id="ideation">
+            <h2>2. Define & Ideate</h2>
+            
+            <div style="margin-bottom: 30px;">
+                <h3>Problem Statement</h3>
+                <p>Pengguna aplikasi transportasi sering mengalami kecemasan dan kebingungan akibat <strong>ketidakpastian harga total</strong> yang harus dibayar dan <strong>sulitnya mengkomunikasikan titik jemput</strong> yang akurat, terutama pada jam sibuk, yang menyebabkan penurunan kepercayaan terhadap layanan.</p>
+            </div>
+
+            <div style="background: #e0f2f1; padding: 30px; border-radius: 12px; border-left: 5px solid var(--primary-color); margin-bottom: 40px;">
+                <h4>How Might We (HMW)</h4>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">*Prioritas masalah diambil dari Affinity Diagram & Value Matrix pada tahap sebelumnya.</p>
+                <p style="margin-bottom: 15px;">1. Bagaimana kita bisa membuat pemilihan lokasi jemput menjadi intuitif bagi pelajar?</p>
+                <p style="margin-bottom: 15px;">2. Bagaimana kita bisa menampilkan rincian biaya di awal tanpa menyembunyikan info?</p>
+                <p>3. Bagaimana kita bisa memberikan jaminan estimasi waktu yang akurat?</p>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3>Brainstorming & Crazy 8's</h3>
+                <p>Proses eksplorasi ide kasar (sketching) untuk mencari variasi layout tercepat.</p>
+                <div class="full-width-box">
+                    <img src="UI/crazy8.png" alt="Crazy 8s Sketches 1">
+                </div>
+                  <div class="full-width-box">
+                    <img src="UI/crazy81.png" alt="Crazy 8s Sketches 2">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3>User Flow</h3>
+                <p>Alur sistem yang dirancang untuk meminimalkan langkah pengguna.</p>
+                <div class="full-width-box">
+                    <img src="UI/UserFlow1.png" alt="User Flow 1">
+                </div>
+                <div class="full-width-box">
+                    <img src="UI/UserFlow2.png" alt="User Flow 2">
+                </div>
+                <div class="full-width-box">
+                    <img src="UI/UserFlow3.png" alt="User Flow 3">
+                </div>
+                <div class="full-width-box">
+                    <img src="UI/UserFlow4.png" alt="User Flow 4">
+                </div>
+            </div>
+
+            <div>
+                <h3>UI Kit & Design System</h3>
+                <p>Konsistensi Tipografi (Poppins), Warna (Teal), dan Komponen.</p>
+                <div class="full-width-box">
+                    <img src="UI/UIkit.jpeg" alt="UI Kit">
+                </div>
+            </div>
+        </section>
+
+        <section id="designs">
+            <h2>3. Prototyping & UI Design</h2>
+            <p>Berikut adalah evolusi dari Wireframe menuju High-Fidelity Design.</p>
+
+            <div class="comparison-grid">
+                <div class="comp-item">
+                    <span class="comp-label">Wireframe (Lo-Fi)</span>
+                    <img src="UI/WireFrame.png" alt="Wireframe">
+                </div>
+                <div class="comp-item">
+                    <span class="comp-label" style="color:var(--primary-color)">Final Design (Hi-Fi)</span>
+                    <img src="UI/HomeJadi.png" alt="Final Design">
+                </div>
+            </div>
+
+            <div class="design-flow" style="margin-top: 50px;">
+                <div class="design-flow-header">
+                    <h3>Flow 1: Kemudahan Akses (Login & Home)</h3>
+                    <p>Antarmuka bersih untuk memudahkan pengguna masuk dan langsung memesan.</p>
+                </div>
+                <div class="scroll-container">
+                    <img src="UI/Login.png" alt="Login">
+                    <img src="UI/register.png" alt="Register">
+                    <img src="UI/Homescreen.png" alt="Home">
+                    <img src="UI/akun.png" alt="Akun">
+                </div>
+            </div>
+
+            <div class="design-flow">
+                <div class="design-flow-header">
+                    <h3>Flow 2: Proses Pemesanan Transparan</h3>
+                    <p>Menjawab masalah Khansa & Irma: Lokasi mudah, Harga jelas di awal.</p>
+                </div>
+                <div class="scroll-container">
+                    <img src="UI/inputlokasi.png" alt="Input Lokasi">
+                    <img src="UI/pilihTransportasi.png" alt="Pilih Transport">
+                    <img src="UI/jemput.png" alt="Titik Jemput">
+                    <img src="UI/konfirmasi.png" alt="Konfirmasi Bayar">
+                </div>
+            </div>
+
+            <div class="design-flow">
+                <div class="design-flow-header">
+                    <h3>Flow 3: Perjalanan & Kedatangan</h3>
+                    <p>Tracking realtime untuk Ibu Yeni agar waktu terpantau jelas.</p>
+                </div>
+                <div class="scroll-container">
+                    <img src="UI/perjalanan.png" alt="On Trip">
+                    <img src="UI/tiba.png" alt="Arrived">
+                    <img src="UI/rating.png" alt="Rating">
+                </div>
+            </div>
+        </section>
+
+        <section class="prototype-box">
+            <h2>Coba Prototype Interaktif</h2>
+            <p style="margin-bottom: 25px;">Rasakan pengalaman langsung alur pemesanan baru ini melalui simulasi Figma.</p>
+            
+            <a href="https://www.figma.com/proto/WT5RYJtrTnk1NvSHwSPmfq/UIUX?node-id=69-36&t=4Kk9FErJ7IoXgMBY-1" target="_blank" class="btn-cta" style="background: var(--text-dark);">
+                ▶ Mainkan Prototype
+            </a>
+        </section>
+
+        <section id="testing">
+            <h2>4. Usability Testing (UT)</h2>
+            <p>Kami melakukan pengujian <strong>Kualitatif (Moderated)</strong> kepada 2 pengguna (Irma & Khansa) untuk memvalidasi solusi.</p>
+            
+            <div style="margin: 30px 0; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                <h4 style="color: var(--primary-color);">Skenario Tugas (Task)</h4>
+                <ul style="margin-left: 20px; margin-top: 10px; color: #555;">
+                    <li><strong>Task 1:</strong> Cari lokasi tujuan ke "Plaza Madiun" dan pilih titik jemput.</li>
+                    <li><strong>Task 2:</strong> Lakukan pemesanan menggunakan metode pembayaran e-wallet.</li>
+                    <li><strong>Task 3:</strong> Cek estimasi harga dan waktu sebelum melakukan konfirmasi pembayaran.</li>
+                </ul>
+                
+                <h4 style="color: var(--primary-color); margin-top: 25px;">Pertanyaan Feedback (Post-Test)</h4>
+                <ul style="margin-left: 20px; margin-top: 10px; color: #555;">
+                    <li>"Bagaimana pendapat Anda tentang kejelasan informasi harga di halaman konfirmasi?"</li>
+                    <li>"Apakah ada bagian dari proses penentuan lokasi yang membingungkan?"</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3>Temuan & Rekomendasi Perbaikan</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; text-align: left;">
+                    <div style="background: #ffebee; padding: 20px; border-radius: 12px;">
+                        <strong style="color: #c62828;">Masalah (Pain Point)</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">User sempat bingung membedakan tombol "Pesan Manual" dan "Pesan Cepat" karena warnanya terlalu mirip.</p>
+                    </div>
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 12px;">
+                        <strong style="color: #2e7d32;">Rekomendasi / Perbaikan</strong>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">Mengubah kontras warna tombol sekunder menjadi outline button agar hierarki visual lebih jelas (Sudah diterapkan di High-Fi).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+                <div style="background: white; padding: 20px; border-radius: 10px; width: 150px; text-align: center; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">
+                    <h3 style="margin:0; font-size: 2.5rem;">92%</h3>
+                    <p>Success Rate</p>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 10px; width: 150px; text-align: center; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">
+                    <h3 style="margin:0; font-size: 2.5rem;">12s</h3>
+                    <p>Avg Time</p>
+                </div>
+            </div>
+            
+            <blockquote style="margin-top: 40px; font-style: italic; text-align: center; color: var(--primary-color);">
+                "Akhirnya saya tidak perlu takut lagi salah tekan biaya, karena semuanya ditampilkan jelas di awal."
+            </blockquote>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Muhammad Raufa Hafid Widodo. Dibuat dengan Passion & Code.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); 
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = 100; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
